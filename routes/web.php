@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes([
+    'reset' => false,
+    'confirm' => false,
+    'verify' => false
+]);
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('tasks', 'TaskController')->except([
+        'index', 'create', 'show', 'edit'
+    ]);
+    Route::get('/', 'TaskController@index')->name('index');
 });
+
